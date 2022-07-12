@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Urls;
+use App\Entity\Url;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Urls>
+ * @extends ServiceEntityRepository<Url>
  *
- * @method Urls|null find($id, $lockMode = null, $lockVersion = null)
- * @method Urls|null findOneBy(array $criteria, array $orderBy = null)
- * @method Urls[]    findAll()
- * @method Urls[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Url|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Url|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Url[]    findAll()
+ * @method Url[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UrlsRepository extends ServiceEntityRepository
+class UrlRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Urls::class);
+        parent::__construct($registry, Url::class);
     }
 
-    public function add(Urls $entity, bool $flush = false): void
+    public function add(Url $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class UrlsRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Urls $entity, bool $flush = false): void
+    public function remove(Url $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,18 +39,8 @@ class UrlsRepository extends ServiceEntityRepository
         }
     }
 
-    public function findUrl()
-    {
-        return $this->getEntityManager()
-                    ->createQuery("
-                        SELECT urls.id, urls.url
-                        FROM App:Urls urls
-                    ")
-                    ->getResult();
-    }
-
 //    /**
-//     * @return Urls[] Returns an array of Urls objects
+//     * @return Url[] Returns an array of Url objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -64,7 +54,7 @@ class UrlsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Urls
+//    public function findOneBySomeField($value): ?Url
 //    {
 //        return $this->createQueryBuilder('u')
 //            ->andWhere('u.exampleField = :val')

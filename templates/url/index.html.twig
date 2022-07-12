@@ -3,7 +3,18 @@
 {% block title %}Hello UrlController!{% endblock %}
 
 {% block body %}
-
-    {{ dump(form) }}
-
+    <table>
+        <th>User</th>
+        <th>Url</th>
+        <th>Propuesta</th>
+        {% for url in data %}
+            <tr>
+                <td>{{ url.user.email }}</td>
+                <td>{{ url.url }}</td>
+                <td>{{ url.urlAbrv }}</td>
+            </tr>
+        {% else %}
+            No hay url que mostrar.
+        {% endfor %}
+    </table>
 {% endblock %}

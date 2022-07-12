@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Urls;
+use App\Entity\Url;
 use App\Entity\User;
 use App\Form\UrlType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,9 +29,9 @@ class UrlController extends AbstractController
     #[Route('/url', name: 'app_url')]
     public function index(Request $request): Response
     {
-        // $data["test"] = $this->em->getRepository(Urls::class)->findAll();
+        $data = $this->em->getRepository(Url::class)->findAll();
         // $data["test"] = $this->em->getRepository(Urls::class)->findUrl();
-        $url = new Urls();
+        $url = new Url();
         $form = $this->createForm(UrlType::class, $url);
         $form->handleRequest($request);
 
@@ -42,7 +42,7 @@ class UrlController extends AbstractController
         }
 
         return $this->render('url/index.html.twig', [
-            'form' => $form
+            'data' => $data
         ]);
     }
 

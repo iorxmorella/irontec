@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Urls;
+use App\Entity\Url;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +14,8 @@ class UrlType extends AbstractType
     {
         $builder
             ->add('url')
+            ->add('creation_date')
+            ->add('urlAbrv')
             ->add('submit', SubmitType::class)
         ;
     }
@@ -21,7 +23,7 @@ class UrlType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Urls::class,
+            'data_class' => Url::class,
         ]);
     }
 }

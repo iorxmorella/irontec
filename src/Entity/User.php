@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,7 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
@@ -30,8 +32,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    #[ORM\Column(type: 'boolean')]
-    private $eliminado;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Url::class, orphanRemoval: true)]
+    private $urls;
+
+    public function __construct()
+    {
+        $this->urls = new ArrayCollection();
+        $this->interactions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -127,14 +135,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isEliminado(): ?bool
+    /**
+     * @return Collection<int, Url>
+     */
+    public function getUrls(): Collection
     {
-        return $this->eliminado;
+        return $this->urls;
     }
 
-    public function setEliminado(bool $eliminado): self
+    public function addUrl(Url $url): self
     {
-        $this->eliminado = $eliminado;
+        if (!$this->urls->contains($url)) {
+            $this->urls[] = $url;
+            $url->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUrl(Url $url): self
+    {
+        if ($this->urls->removeElement($url)) {
+            // set the owning side to null (unless already changed)
+            if ($url->getUser() === $this) {
+                $url->setUser(null);
+            }
+        }
 
         return $this;
     }
